@@ -1,15 +1,29 @@
 package com.packagename.myapp.backend.entity;
 
 import javax.persistence.ManyToOne;
+import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
-public class Banner {
-    @ManyToOne
+@Entity
+public class Banner extends AbstractEntity implements Cloneable{
+
     private String gameID;
 
+    @NotNull
+    @NotEmpty
     private String userName;
+    @NotNull
+    @NotEmpty
     private String rarity1;
+    @NotNull
+    @NotEmpty
     private int rarity1Value;
+    @NotNull
+    @NotEmpty
     private String rarity2;
+    @NotNull
+    @NotEmpty
     private int rarity2Value;
     private String rarity3;
     private int rarity3Value;

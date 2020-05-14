@@ -4,8 +4,10 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.persistence.*;
 
-public class User extends  AbstractEntity implements Cloneable {
+@Entity
+public class User extends AbstractEntity implements Cloneable {
 
     @NotNull
     @NotEmpty
