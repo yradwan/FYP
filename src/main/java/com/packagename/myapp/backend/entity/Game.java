@@ -7,17 +7,13 @@ import javax.validation.constraints.NotNull;
 @Entity
 public class Game extends AbstractEntity implements  Cloneable{
 
-    @NotNull
-    @NotEmpty
+
     private String gameName;
-    @NotNull
-    @NotEmpty
+
     private double costPerSingleRoll;
-    @NotNull
-    @NotEmpty
+
     private double costPerIGC;
-    @NotNull
-    @NotEmpty
+
     private String gameID;
 
     public String getGameID() {
@@ -54,4 +50,5 @@ public class Game extends AbstractEntity implements  Cloneable{
     //
     //to add dataloader
     //
+
 }

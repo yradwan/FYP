@@ -31,7 +31,7 @@ public class UserService {
     public void save(User user) {
         if (user == null) {
             LOGGER.log(Level.SEVERE,
-                    "Contact is null. Are you sure you have connected your form to the application?");
+                    "User is null. Are you sure you have connected your form to the application?");
             return;
         }
         userRepository.save(user);

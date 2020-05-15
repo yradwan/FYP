@@ -21,7 +21,15 @@ public class BannerService {
     public List<Banner> findAll() {
         return bannerRepository.findAll();
     }
-
+    public Banner find(String name){
+        List<Banner> list = findAll();
+        int id;
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).getUserName() == name)
+                return list.get(i);
+        }
+        return new Banner();
+    }
     public long count() {
         return bannerRepository.count();
     }
@@ -33,7 +41,7 @@ public class BannerService {
     public void save(Banner banner) {
         if (banner == null) {
             LOGGER.log(Level.SEVERE,
-                    "Contact is null. Are you sure you have connected your form to the application?");
+                    "Banner is null. Are you sure you have connected your form to the application?");
             return;
         }
         bannerRepository.save(banner);
