@@ -21,6 +21,17 @@ public class BannerService {
     public List<Banner> findAll() {
         return bannerRepository.findAll();
     }
+
+    public List<Banner> findAll(String stringFilter) {
+        if (stringFilter == null || stringFilter.isEmpty()) {
+            return bannerRepository.findAll();
+        } else {
+            return bannerRepository.search(stringFilter);
+        }
+    }
+    public  int getRarity1total(String searchTerm){
+        return bannerRepository.getrarity1(searchTerm);
+    }
     public Banner find(String name){
         List<Banner> list = findAll();
         int id;
@@ -46,4 +57,6 @@ public class BannerService {
         }
         bannerRepository.save(banner);
     }
+
+
 }

@@ -1,4 +1,4 @@
-package com.packagename.myapp.ui;
+package com.packagename.myapp.ui.gameListView;
 
 import com.packagename.myapp.backend.entity.Game;
 import com.vaadin.flow.component.Component;
@@ -14,7 +14,6 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.converter.StringToDoubleConverter;
-import com.vaadin.flow.data.converter.StringToIntegerConverter;
 import com.vaadin.flow.shared.Registration;
 
 import java.util.List;
