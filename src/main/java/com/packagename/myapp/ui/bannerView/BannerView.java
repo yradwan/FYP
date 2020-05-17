@@ -66,6 +66,8 @@ public class BannerView extends VerticalLayout implements HasUrlParameter<String
     //next to do
     //
     //
+
+    /*
     private Map<String, Integer> getStats() throws Exception {
         Banner banner = bannerService.find(gameID);
         HashMap<String, Integer> stats = new HashMap<>();
@@ -93,6 +95,71 @@ public class BannerView extends VerticalLayout implements HasUrlParameter<String
         totals.forEach(total1 -> stats.put(total1.getRarity(), total1.getSize()));
         return stats;
     }
+    */
+
+    private Map<String, Integer> getStats() throws Exception {
+        Banner banner = bannerService.find(gameID);
+        HashMap<String, Integer> stats = new HashMap<>();
+        Total total = new Total();
+        String temp1 = "";
+        long temp2 = 0;
+        List<Total> totals = new ArrayList<>();
+        Banner adminBanner = getAdmin();
+        int raritySize = getRarities();
+        for (int i = 0; i < raritySize; i++) {
+            //so for this you go through with an if for each rarity section
+            //so your if statements will go all the way up to i=9 with a getRarity/raritytotal
+            //you continue to use your temps I'll need to remove the method invokes
+            //decided to go switch instead
+            switch (i) {
+                case 0 :
+                    temp1 = adminBanner.getRarity1();
+                    temp2 = bannerService.getRarity1total(gameID);
+                    break;
+                case 1 :
+                    temp1 = adminBanner.getRarity2();
+                    temp2 = bannerService.getRarity2total(gameID);
+                    break;
+                case 2 :
+                    temp1 = adminBanner.getRarity3();
+                    temp2 = bannerService.getRarity3total(gameID);
+                    break;
+                case 3 :
+                    temp1 = adminBanner.getRarity4();
+                    temp2 = bannerService.getRarity4total(gameID);
+                    break;
+                case 4 :
+                    temp1 = adminBanner.getRarity5();
+                    temp2 = bannerService.getRarity5total(gameID);
+                    break;
+                case 5 :
+                    temp1 = adminBanner.getRarity6();
+                    temp2 = bannerService.getRarity6total(gameID);
+                    break;
+                case 6 :
+                    temp1 = adminBanner.getRarity7();
+                    temp2 = bannerService.getRarity7total(gameID);
+                    break;
+                case 7 :
+                    temp1 = adminBanner.getRarity8();
+                    temp2 = bannerService.getRarity8total(gameID);
+                    break;
+                case 8 :
+                    temp1 = adminBanner.getRarity9();
+                    temp2 = bannerService.getRarity9total(gameID);
+                    break;
+                case 9 :
+                    temp1 = adminBanner.getRarity10();
+                    temp2 = bannerService.getRarity10total(gameID);
+                    break;
+            }
+            total.setRarity(temp1);
+            total.setSize((int)temp2);
+            totals.add(total);
+        }
+        totals.forEach(total1 -> stats.put(total1.getRarity(), total1.getSize()));
+        return stats;
+    }
     private int getRarities()  {
         int size = 2;
         Banner adminBanner = getAdmin();
@@ -100,6 +167,7 @@ public class BannerView extends VerticalLayout implements HasUrlParameter<String
         int temps = 0;
         String tempString;
         //change all the reflections to an if statement even if it doesn't appear as clean
+        //was originally going to have a switch statement but if should probably be better here
         for (int i = 0; i < maxRarityCount; i++) {
             temps = i + 1;
             if (i == 2) {
