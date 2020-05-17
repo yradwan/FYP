@@ -51,7 +51,6 @@ public class GameService {
 
     @PostConstruct
     public void populateTestData() {
-
         if (gameRepository.count() == 0) {
             int i = 0;
             Random r = new Random(0);

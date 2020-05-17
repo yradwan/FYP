@@ -1,6 +1,7 @@
 package com.packagename.myapp.ui.gameListView;
 
 import com.packagename.myapp.backend.entity.Game;
+import com.packagename.myapp.ui.bannerView.BannerView;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.ComponentEventListener;
@@ -14,6 +15,7 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.converter.StringToDoubleConverter;
+import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.shared.Registration;
 
 import java.util.List;
@@ -26,6 +28,8 @@ public class GameForm extends FormLayout {
     TextField costPerSingleRoll = new TextField("Cost Per Single Roll (Real World Cost of One Roll) ");
     TextField igcCostPerSingleRoll = new TextField("Role Cost In IGC (In-game Currency) ");
     TextField gameID = new TextField("Game ID");
+    RouterLink routerLink;
+    String routeVariable;
 
     Button save = new Button("Save");
     Button close = new Button("Cancel");
@@ -44,8 +48,9 @@ public class GameForm extends FormLayout {
                         new StringToDoubleConverter("Not a number"))
                 .bind(Game::getCostPerIGC,
                         Game::setCostPerIGC);
-
-        add(gameName, costPerSingleRoll, igcCostPerSingleRoll, gameID, createButtonsLayout());
+        routeVariable = gameID.getValue();
+        routerLink = new RouterLink("Link to game data", BannerView.class, routeVariable);
+        add(routerLink, gameName, costPerSingleRoll, igcCostPerSingleRoll, gameID, createButtonsLayout());
     }
  /*
     private HorizontalLayout createButtonsLayout() {
