@@ -3,16 +3,19 @@ package com.packagename.myapp.ui.gameListView;
 import com.packagename.myapp.backend.entity.Game;
 import com.packagename.myapp.backend.service.GameService;
 import com.packagename.myapp.ui.MainLayout;
+import com.packagename.myapp.ui.bannerView.BannerView;
 import com.packagename.myapp.ui.gameListView.GameForm;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.RouterLink;
 
 @Route(value="", layout = MainLayout.class)
 @PageTitle("List of Games")
@@ -20,8 +23,12 @@ public class GameListView extends VerticalLayout {
 
     private GameService gameService;
     private Grid<Game> grid = new Grid<>(Game.class);
+    //private Grid<Banner> grid = new Grid<>(Banner.class);
     private TextField filterText = new TextField();
     private GameForm gameForm;
+    private RouterLink routerLink;
+    private String pathVariable;
+    private boolean linkCheck = true;
 
     public GameListView(GameService gameService) {
         this.gameService = gameService;
@@ -101,6 +108,16 @@ public class GameListView extends VerticalLayout {
         } else {
             gameForm.setGame(game);
             gameForm.setVisible(true);
+            if (linkCheck == false) {
+                gameForm.remove(routerLink);
+                linkCheck = true;
+            }
+            if (game.getGameID() != ""){
+                pathVariable = gameForm.gameID.getValue();
+                routerLink = new RouterLink("Link to game data", BannerView.class, pathVariable);
+                gameForm.add(routerLink);
+                linkCheck = false;
+            }
             addClassName("editing");
         }
     }

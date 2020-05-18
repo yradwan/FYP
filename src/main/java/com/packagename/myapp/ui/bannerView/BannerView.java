@@ -10,6 +10,8 @@ import com.vaadin.flow.component.charts.Chart;
 import com.vaadin.flow.component.charts.model.ChartType;
 import com.vaadin.flow.component.charts.model.DataSeries;
 import com.vaadin.flow.component.charts.model.DataSeriesItem;
+import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.BeforeEvent;
@@ -34,28 +36,60 @@ public class BannerView extends VerticalLayout implements HasUrlParameter<String
     private BannerService bannerService;
     private GameService gameService;
     private String gameID;
+    //move back to chart after testing
+    private List<Total> totals;
+    //to be removed
+    //private Grid<Banner> grid = new Grid<>(Banner.class);
 
-    public BannerView(BannerService bannerService, GameService gameService) throws Exception{
+    public BannerView(BannerService bannerService, GameService gameService) {
         this.bannerService = bannerService;
         this.gameService = gameService;
-        this.gameID = gameID;
+        gameID = "gbf0520";
+        //move totals back to chart
+        totals = new ArrayList<>();
         addClassName("banner-view");
         setDefaultHorizontalComponentAlignment(Alignment.CENTER);
-        add(getBannerCount(), getData());
+        //remove later
+        //grid.setItems(bannerService.findAll(gameID));
+        //grid.setSizeFull();
+        //grid.removeAllColumns();
+        //grid.setColumns("gameID", "userName");
+        //grid.getColumns().forEach(col -> col.setAutoWidth(true));
+        //
+        /*
+        List<Banner> bannerList = bannerService.findAll(gameID);
+        Span s = new Span(bannerList.toString());
+        Span tests = new Span(getAdmin().toString());
+        Span test2 = new Span(getAdmin().getRarity1());
+        String a = Integer.toString(getRarities());
+        Span test3 = new Span(a);
+        String temp = Long.toString(bannerService.getRarity1total(gameID));
+        Span test4 = new Span(temp);
+
+         */
+        add(getBannerCount(), getData() );//, s, tests,test2, test3, test4);
+        //Span sd = new Span(totals.toString());
+        //add(sd);
     }
     @Override
     public void setParameter(BeforeEvent event,
                              String parameter) {
-        setID(parameter);
+        gameID = parameter;
     }
-
+/*
     private void setID(String parameter) {
         gameID = parameter;
     }
-
+*/
     private Component getBannerCount() {
-
+        //will need to fix this and get it to show the correct number of users
+        //I also need to make sure to fix the stats so it'll properly pass the stats
+        //right now I suspect the issue might be with the find all command
+        //for the moment that they are currently showing all users in the list
+        //rather than just  the correct set of users
+        //most likely the issue could be the parameter passing
         List<Banner> bannerList = bannerService.findAll(gameID);
+        //might need to create a for list that grabs all the banners with gameID
         Span stats = new Span(bannerList.size() + " Users have submitted data for this game");
         stats.addClassName("banner-count");
         return stats;
@@ -97,16 +131,16 @@ public class BannerView extends VerticalLayout implements HasUrlParameter<String
     }
     */
 
-    private Map<String, Integer> getStats() throws Exception {
-        Banner banner = bannerService.find(gameID);
+    private Map<String, Integer> getStats() {
+        //Banner banner = bannerService.find(gameID);
         HashMap<String, Integer> stats = new HashMap<>();
         Total total = new Total();
         String temp1 = "";
         long temp2 = 0;
-        List<Total> totals = new ArrayList<>();
         Banner adminBanner = getAdmin();
         int raritySize = getRarities();
         for (int i = 0; i < raritySize; i++) {
+            total = new Total();
             //so for this you go through with an if for each rarity section
             //so your if statements will go all the way up to i=9 with a getRarity/raritytotal
             //you continue to use your temps I'll need to remove the method invokes
@@ -151,7 +185,6 @@ public class BannerView extends VerticalLayout implements HasUrlParameter<String
                 case 9 :
                     temp1 = adminBanner.getRarity10();
                     temp2 = bannerService.getRarity10total(gameID);
-                    break;
             }
             total.setRarity(temp1);
             total.setSize((int)temp2);
@@ -169,7 +202,7 @@ public class BannerView extends VerticalLayout implements HasUrlParameter<String
         //change all the reflections to an if statement even if it doesn't appear as clean
         //was originally going to have a switch statement but if should probably be better here
         for (int i = 0; i < maxRarityCount; i++) {
-            temps = i + 1;
+            temps = i;
             if (i == 2) {
                 tempString = adminBanner.getRarity3();
                 if (tempString == null) {
@@ -233,15 +266,14 @@ public class BannerView extends VerticalLayout implements HasUrlParameter<String
         String admin = "admin";
         Banner adminBanner = new Banner();
         for (int i = 0; i < bannerList.size(); i++) {
-            if (bannerList.get(i).getUserName() == admin)
+            if ((bannerList.get(i).getUserName()).equals(admin))
                 adminBanner = bannerList.get(i);
         }
         return adminBanner;
     }
     //remove this exception once you finish grabbing the new one
-    private Chart getData() throws Exception{
+    private Chart getData() {
         Chart chart = new Chart(ChartType.PIE);
-
         DataSeries dataSeries = new DataSeries();
         Map<String, Integer> statMaps = getStats();
         statMaps.forEach((rarity, value) ->

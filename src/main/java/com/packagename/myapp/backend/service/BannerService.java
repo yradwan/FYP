@@ -98,7 +98,7 @@ public class BannerService {
             int i = 0;
             Random r = new Random(0);
             List<Banner> banners;
-            bannerRepository.saveAll(Stream.of("gbf0520 yradwan", "fgo0520 yradwan", "fif0520 test", "gbf0520 test", "fgo0520 test", "fif0520 yradwan", "gbf0520 sderno", "fgo0520 sderno", "fif0520 sderno" )
+            bannerRepository.saveAll(Stream.of("gbf0520 yradwan", "fgo0520 yradwan", "fif0520 test", "gbf0520 test", "fgo0520 test", "fif0520 yradwan", "gbf0520 sderno", "fgo0520 sderno", "fif0520 sderno", "gbf0520 admin", "fgo0520 admin", "fif0520 admin" )
                     .map(name -> {
                         String[] split = name.split(" ");
                         Banner banner = new Banner();

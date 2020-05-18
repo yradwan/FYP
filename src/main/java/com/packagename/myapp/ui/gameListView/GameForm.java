@@ -28,9 +28,10 @@ public class GameForm extends FormLayout {
     TextField costPerSingleRoll = new TextField("Cost Per Single Roll (Real World Cost of One Roll) ");
     TextField igcCostPerSingleRoll = new TextField("Role Cost In IGC (In-game Currency) ");
     TextField gameID = new TextField("Game ID");
+    /*
     RouterLink routerLink;
     String routeVariable;
-
+    */
     Button save = new Button("Save");
     Button close = new Button("Cancel");
 
@@ -48,9 +49,12 @@ public class GameForm extends FormLayout {
                         new StringToDoubleConverter("Not a number"))
                 .bind(Game::getCostPerIGC,
                         Game::setCostPerIGC);
+        /*
         routeVariable = gameID.getValue();
-        routerLink = new RouterLink("Link to game data", BannerView.class, routeVariable);
-        add(routerLink, gameName, costPerSingleRoll, igcCostPerSingleRoll, gameID, createButtonsLayout());
+        String test = "gbf0520";
+        routerLink = new RouterLink("Link to game data", BannerView.class, test);
+        */
+        add(gameName, costPerSingleRoll, igcCostPerSingleRoll, gameID, createButtonsLayout());
     }
  /*
     private HorizontalLayout createButtonsLayout() {

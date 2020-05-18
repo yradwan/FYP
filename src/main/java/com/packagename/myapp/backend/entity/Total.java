@@ -20,4 +20,12 @@ public class Total {
     public void setRarity(String rarity) {
         this.rarity = rarity;
     }
+
+    @Override
+    public String toString() {
+        return "Total{" +
+                "rarity='" + rarity + '\'' +
+                ", size=" + size +
+                '}';
+    }
 }

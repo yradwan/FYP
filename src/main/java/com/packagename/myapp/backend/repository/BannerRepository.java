@@ -9,8 +9,7 @@ import java.util.List;
 
 public interface BannerRepository extends JpaRepository<Banner, Long> {
 
-    @Query("select b from Banner b " +
-            "where lower(b.gameID) like lower(concat('%', :searchTerm, '%')) ") //
+    @Query("select b from Banner b where lower(b.gameID) like lower(concat('%', :searchTerm, '%')) ") //
     List<Banner> search(@Param("searchTerm") String searchTerm);
     //need to fix jpql
     @Query(value = "select sum(b.rarity1Value) from Banner b" +

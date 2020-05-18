@@ -207,5 +207,11 @@ public class Banner extends AbstractEntity implements Cloneable{
         this.rarity10Value = rarity10Value;
     }
 
-
+    @Override
+    public String toString() {
+        return "Banner{" +
+                "gameID='" + gameID + '\'' +
+                ", userName='" + userName + '\'' +
+                '}';
+    }
 }
