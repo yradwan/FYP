@@ -27,6 +27,7 @@ public class GameListView extends VerticalLayout {
     private TextField filterText = new TextField();
     private GameForm gameForm;
     private RouterLink routerLink;
+    //private Button button;
     private String pathVariable;
     private boolean linkCheck = true;
 
@@ -114,6 +115,7 @@ public class GameListView extends VerticalLayout {
             }
             if (game.getGameID() != ""){
                 pathVariable = gameForm.gameID.getValue();
+                //button = new Button("Link to game data");
                 routerLink = new RouterLink("Link to game data", BannerView.class, pathVariable);
                 gameForm.add(routerLink);
                 linkCheck = false;

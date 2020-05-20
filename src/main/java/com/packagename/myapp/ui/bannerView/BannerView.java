@@ -6,6 +6,8 @@ import com.packagename.myapp.backend.service.BannerService;
 import com.packagename.myapp.backend.service.GameService;
 import com.packagename.myapp.ui.MainLayout;
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.charts.Chart;
 import com.vaadin.flow.component.charts.model.ChartType;
 import com.vaadin.flow.component.charts.model.DataSeries;
@@ -14,11 +16,16 @@ import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.page.Page;
 import com.vaadin.flow.router.BeforeEvent;
 import com.vaadin.flow.router.HasUrlParameter;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.server.VaadinRequest;
+import com.vaadin.flow.server.VaadinService;
+import com.vaadin.flow.server.VaadinServletRequest;
 
+import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,57 +37,57 @@ import java.util.Map;
 //but it will remove the exception throwing and reflection making it easier
 
 @Route(value = "banner", layout = MainLayout.class)
-@PageTitle("Banner of Game")
+@PageTitle("Banner")
 public class BannerView extends VerticalLayout implements HasUrlParameter<String> {
 
     private BannerService bannerService;
     private GameService gameService;
-    private String gameID;
+    private String ID = "";
+
+    //our next few steps are finding out how to pass the parameter properly and
+    //adding a form to add our stats to this page
+    //once that's done head on to login
+
+    //gameID = "gbf0520";
+    //move totals back to chart
+
     //move back to chart after testing
-    private List<Total> totals;
     //to be removed
     //private Grid<Banner> grid = new Grid<>(Banner.class);
 
     public BannerView(BannerService bannerService, GameService gameService) {
         this.bannerService = bannerService;
         this.gameService = gameService;
-        gameID = "gbf0520";
-        //move totals back to chart
-        totals = new ArrayList<>();
         addClassName("banner-view");
         setDefaultHorizontalComponentAlignment(Alignment.CENTER);
-        //remove later
-        //grid.setItems(bannerService.findAll(gameID));
-        //grid.setSizeFull();
-        //grid.removeAllColumns();
-        //grid.setColumns("gameID", "userName");
-        //grid.getColumns().forEach(col -> col.setAutoWidth(true));
-        //
-        /*
-        List<Banner> bannerList = bannerService.findAll(gameID);
-        Span s = new Span(bannerList.toString());
-        Span tests = new Span(getAdmin().toString());
-        Span test2 = new Span(getAdmin().getRarity1());
-        String a = Integer.toString(getRarities());
-        Span test3 = new Span(a);
-        String temp = Long.toString(bannerService.getRarity1total(gameID));
-        Span test4 = new Span(temp);
 
-         */
-        add(getBannerCount(), getData() );//, s, tests,test2, test3, test4);
-        //Span sd = new Span(totals.toString());
-        //add(sd);
     }
     @Override
     public void setParameter(BeforeEvent event,
                              String parameter) {
-        gameID = parameter;
+        ID = parameter;
+        addUI();
     }
+
+    private void addUI() {
+        List<Banner> bannerCheck = bannerService.findAll(ID);
+        //System.out.println(bannerCheck);
+        if (bannerCheck.size() != 0 ){
+            add(getBannerCount(), getData(), getAverageStats());
+        }
+        else
+            add(new Span("Go back to List and Select a game"));
+    }
+
 /*
     private void setID(String parameter) {
         gameID = parameter;
     }
 */
+   // private void setGameID(String ID){
+   //     gameID = ID;
+   // }
+
     private Component getBannerCount() {
         //will need to fix this and get it to show the correct number of users
         //I also need to make sure to fix the stats so it'll properly pass the stats
@@ -88,7 +95,7 @@ public class BannerView extends VerticalLayout implements HasUrlParameter<String
         //for the moment that they are currently showing all users in the list
         //rather than just  the correct set of users
         //most likely the issue could be the parameter passing
-        List<Banner> bannerList = bannerService.findAll(gameID);
+        List<Banner> bannerList = bannerService.findAll(ID);
         //might need to create a for list that grabs all the banners with gameID
         Span stats = new Span(bannerList.size() + " Users have submitted data for this game");
         stats.addClassName("banner-count");
@@ -131,10 +138,29 @@ public class BannerView extends VerticalLayout implements HasUrlParameter<String
     }
     */
 
+    private  Component getAverageStats(){
+        Map<String, Integer> statMaps = getStats();
+        VerticalLayout averageStats = new VerticalLayout();
+        int total = 0;
+        //this for loop is used to get the total stats for this
+        for (String i : statMaps.keySet()) {
+            total += statMaps.get(i);
+        }
+        for (String i : statMaps.keySet()) {
+            //I'm not quite sure why but these aren't going to two decimal points
+            float temp =  statMaps.get(i);
+            float average = (temp / total) * 100;
+            String tempString = String.format("%.2f", average);
+            averageStats.add(new Span("The average rate for a " + i + " is " + tempString + "%"));
+        }
+        return averageStats;
+    }
+
     private Map<String, Integer> getStats() {
         //Banner banner = bannerService.find(gameID);
         HashMap<String, Integer> stats = new HashMap<>();
         Total total = new Total();
+        List<Total> totals = new ArrayList<>();
         String temp1 = "";
         long temp2 = 0;
         Banner adminBanner = getAdmin();
@@ -148,43 +174,43 @@ public class BannerView extends VerticalLayout implements HasUrlParameter<String
             switch (i) {
                 case 0 :
                     temp1 = adminBanner.getRarity1();
-                    temp2 = bannerService.getRarity1total(gameID);
+                    temp2 = bannerService.getRarity1total(ID);
                     break;
                 case 1 :
                     temp1 = adminBanner.getRarity2();
-                    temp2 = bannerService.getRarity2total(gameID);
+                    temp2 = bannerService.getRarity2total(ID);
                     break;
                 case 2 :
                     temp1 = adminBanner.getRarity3();
-                    temp2 = bannerService.getRarity3total(gameID);
+                    temp2 = bannerService.getRarity3total(ID);
                     break;
                 case 3 :
                     temp1 = adminBanner.getRarity4();
-                    temp2 = bannerService.getRarity4total(gameID);
+                    temp2 = bannerService.getRarity4total(ID);
                     break;
                 case 4 :
                     temp1 = adminBanner.getRarity5();
-                    temp2 = bannerService.getRarity5total(gameID);
+                    temp2 = bannerService.getRarity5total(ID);
                     break;
                 case 5 :
                     temp1 = adminBanner.getRarity6();
-                    temp2 = bannerService.getRarity6total(gameID);
+                    temp2 = bannerService.getRarity6total(ID);
                     break;
                 case 6 :
                     temp1 = adminBanner.getRarity7();
-                    temp2 = bannerService.getRarity7total(gameID);
+                    temp2 = bannerService.getRarity7total(ID);
                     break;
                 case 7 :
                     temp1 = adminBanner.getRarity8();
-                    temp2 = bannerService.getRarity8total(gameID);
+                    temp2 = bannerService.getRarity8total(ID);
                     break;
                 case 8 :
                     temp1 = adminBanner.getRarity9();
-                    temp2 = bannerService.getRarity9total(gameID);
+                    temp2 = bannerService.getRarity9total(ID);
                     break;
                 case 9 :
                     temp1 = adminBanner.getRarity10();
-                    temp2 = bannerService.getRarity10total(gameID);
+                    temp2 = bannerService.getRarity10total(ID);
             }
             total.setRarity(temp1);
             total.setSize((int)temp2);
@@ -262,7 +288,7 @@ public class BannerView extends VerticalLayout implements HasUrlParameter<String
         return size;
     }
     private Banner getAdmin() {
-        List<Banner> bannerList = bannerService.findAll(gameID);
+        List<Banner> bannerList = bannerService.findAll(ID);
         String admin = "admin";
         Banner adminBanner = new Banner();
         for (int i = 0; i < bannerList.size(); i++) {
