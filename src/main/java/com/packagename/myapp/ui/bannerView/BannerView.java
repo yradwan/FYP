@@ -24,6 +24,8 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.VaadinRequest;
 import com.vaadin.flow.server.VaadinService;
 import com.vaadin.flow.server.VaadinServletRequest;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
@@ -66,6 +68,15 @@ public class BannerView extends VerticalLayout implements HasUrlParameter<String
     public void setParameter(BeforeEvent event,
                              String parameter) {
         ID = parameter;
+        Object object = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username;
+        if (object instanceof UserDetails) {
+            username = ((UserDetails)object).getUsername();
+        } else {
+            username = object.toString();
+        }
+        Span user = new Span(username);
+        add(user);
         addUI();
     }
 

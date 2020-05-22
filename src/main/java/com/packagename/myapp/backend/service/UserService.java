@@ -1,13 +1,18 @@
 package com.packagename.myapp.backend.service;
 
 
+import com.packagename.myapp.backend.entity.Game;
 import com.packagename.myapp.backend.entity.User;
 import org.springframework.stereotype.Service;
 import com.packagename.myapp.backend.repository.UserRepository;
 
+import javax.annotation.PostConstruct;
 import java.util.List;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class UserService {
@@ -39,4 +44,19 @@ public class UserService {
     //
     //to add data loader
     //
+    @PostConstruct
+    public void populateTestData() {
+        if (userRepository.count() == 0) {
+            int i = 0;
+            Random r = new Random(0);
+            userRepository.saveAll(
+                    Stream.of("yradwan", "admin", "denis")
+                            .map(name -> {
+                                User user = new User();
+                                user.setUserName(name);
+                                user.setPassword("password");
+                                return user;
+                            }).collect(Collectors.toList()));
+        }
+    }
 }

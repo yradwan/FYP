@@ -30,7 +30,8 @@ a[highlight] {
 
 @media all and (max-width: 1100px) {
     .list-view.editing .toolbar,
-    .list-view.editing .contact-grid {
+    .list-view.editing .contact-grid,
+    .login-view.editing .login{
         display: none;
    }
 }
@@ -39,4 +40,22 @@ a[highlight] {
 .banner-view .banner-count {
     font-size: 4em;
     margin: 1em 0;
+}
+
+/* Login view */
+.login-view .login-layout {
+
+}
+
+/* trying to a dark theme*/
+:root {
+  --main-color: black;
+}
+
+.login-view .login {
+
+}
+
+.login-view .registration-form {
+    padding: var(--lumo-space-m);
 }

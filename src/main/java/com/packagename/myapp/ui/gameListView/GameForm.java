@@ -56,21 +56,7 @@ public class GameForm extends FormLayout {
         */
         add(gameName, costPerSingleRoll, igcCostPerSingleRoll, gameID, createButtonsLayout());
     }
- /*
-    private HorizontalLayout createButtonsLayout() {
-        save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        close.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
 
-        save.addClickShortcut(Key.ENTER);
-        close.addClickShortcut(Key.ESCAPE);
-
-        return new HorizontalLayout(save, close);
-    }
-
-    public void setGame(Game game) {
-        binder.setBean(game);
-    }
-*/
     private Component createButtonsLayout() {
         // omitted
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);

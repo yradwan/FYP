@@ -11,25 +11,13 @@ public class User extends AbstractEntity implements Cloneable {
 
     @NotNull
     @NotEmpty
+    @Column(unique = true)
     private String userName = "";
-
-    @Email
-    @NotNull
-    @NotEmpty
-    private String email = "";
 
     @NotNull
     @NotEmpty
     @Size(min=8)
     private String password = "";
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
 
     public String getUserName() {
         return userName;
@@ -37,5 +25,21 @@ public class User extends AbstractEntity implements Cloneable {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userName='" + userName + '\'' +
+                ", password='" + password + '\'' +
+                '}';
     }
 }
