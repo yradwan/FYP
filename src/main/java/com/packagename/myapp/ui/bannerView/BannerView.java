@@ -429,54 +429,54 @@ public class BannerView extends VerticalLayout implements HasUrlParameter<String
         Banner adminBanner = getAdmin();
         //will new to go back here and update this to set the labels using admin instead
         VerticalLayout layout = new VerticalLayout();
-        rarity1.setLabel(banner.getRarity1());
+        rarity1.setLabel(adminBanner.getRarity1());
         rarity1.setValue(banner.getRarity1Value());
         rarity1.setMin(0);
-        rarity2.setLabel(banner.getRarity2());
+        rarity2.setLabel(adminBanner.getRarity2());
         rarity2.setValue(banner.getRarity2Value());
         rarity2.setMin(0);
-        rarity3.setLabel(banner.getRarity3());
+        rarity3.setLabel(adminBanner.getRarity3());
         rarity3.setValue(banner.getRarity3Value());
         rarity3.setMin(0);
         layout.add(rarity1, rarity2, rarity3);
         if (getRarities() > 3) {
-            rarity4.setLabel(banner.getRarity4());
+            rarity4.setLabel(adminBanner.getRarity4());
             rarity4.setValue(banner.getRarity4Value());
             rarity4.setMin(0);
             layout.add(rarity4);
         }
         if (getRarities() > 4) {
-            rarity5.setLabel(banner.getRarity5());
+            rarity5.setLabel(adminBanner.getRarity5());
             rarity5.setValue(banner.getRarity5Value());
             rarity5.setMin(0);
             layout.add(rarity5);
         }
         if (getRarities() > 5) {
-            rarity6.setLabel(banner.getRarity6());
+            rarity6.setLabel(adminBanner.getRarity6());
             rarity6.setValue(banner.getRarity6Value());
             rarity6.setMin(0);
             layout.add(rarity6);
         }
         if (getRarities() > 6) {
-            rarity7.setLabel(banner.getRarity7());
+            rarity7.setLabel(adminBanner.getRarity7());
             rarity7.setValue(banner.getRarity7Value());
             rarity7.setMin(0);
             layout.add(rarity7);
         }
         if (getRarities() > 7) {
-            rarity8.setLabel(banner.getRarity8());
+            rarity8.setLabel(adminBanner.getRarity8());
             rarity8.setValue(banner.getRarity8Value());
             rarity8.setMin(0);
             layout.add(rarity8);
         }
         if (getRarities() > 8) {
-            rarity9.setLabel(banner.getRarity9());
+            rarity9.setLabel(adminBanner.getRarity9());
             rarity9.setValue(banner.getRarity9Value());
             rarity9.setMin(0);
             layout.add(rarity9);
         }
         if (getRarities() > 9) {
-            rarity10.setLabel(banner.getRarity10());
+            rarity10.setLabel(adminBanner.getRarity10());
             rarity10.setValue(banner.getRarity10Value());
             rarity10.setMin(0);
             layout.add(rarity10);
@@ -486,23 +486,44 @@ public class BannerView extends VerticalLayout implements HasUrlParameter<String
 
     private void submitData(String userName) {
         Banner banner = bannerService.find(ID, userName);
+        Banner adminBanner = getAdmin();
+        banner.setGameID(ID);
+        banner.setUserName(userName);
+        //set rarity names here
         banner.setRarity1Value(rarity1.getValue());
+        banner.setRarity1(adminBanner.getRarity1());
         banner.setRarity2Value(rarity2.getValue());
+        banner.setRarity2(adminBanner.getRarity2());
         banner.setRarity3Value(rarity3.getValue());
-        if (getRarities() > 3)
+        banner.setRarity3(adminBanner.getRarity3());
+        if (getRarities() > 3){
             banner.setRarity4Value(rarity4.getValue());
-        if (getRarities() > 4)
+            banner.setRarity4(adminBanner.getRarity4());
+        }
+        if (getRarities() > 4){
             banner.setRarity5Value(rarity5.getValue());
-        if (getRarities() > 5)
+            banner.setRarity5(adminBanner.getRarity5());
+        }
+        if (getRarities() > 5){
             banner.setRarity6Value(rarity6.getValue());
-        if (getRarities() > 6)
+            banner.setRarity6(adminBanner.getRarity6());
+        }
+        if (getRarities() > 6){
             banner.setRarity7Value(rarity7.getValue());
-        if (getRarities() > 7)
+            banner.setRarity7(adminBanner.getRarity7());
+        }
+        if (getRarities() > 7){
             banner.setRarity8Value(rarity8.getValue());
-        if (getRarities() > 8)
+            banner.setRarity8(adminBanner.getRarity8());
+        }
+        if (getRarities() > 8) {
             banner.setRarity9Value(rarity9.getValue());
-        if (getRarities() > 9)
+            banner.setRarity9(adminBanner.getRarity9());
+        }
+        if (getRarities() > 9){
             banner.setRarity10Value(rarity10.getValue());
+            banner.setRarity10(adminBanner.getRarity10());
+        }
         bannerService.save(banner);
         UI.getCurrent().getPage().reload();
         //will need to iterate through the get rarities like before
