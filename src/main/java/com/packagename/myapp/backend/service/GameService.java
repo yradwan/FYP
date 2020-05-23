@@ -5,10 +5,7 @@ import com.packagename.myapp.backend.repository.GameRepository;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -53,6 +50,7 @@ public class GameService {
     public void populateTestData() {
         if (gameRepository.count() == 0) {
             int i = 0;
+            List<String> gameIDs = new ArrayList<>(Arrays. asList("gbf0520", "fgo0520", "fif0520"));
             Random r = new Random(0);
             gameRepository.saveAll(
                     Stream.of("Granblue Fantasy (2020/05)", "Fate/Grand Order (2020/05)", "Fifa 2020 (2020/05)")
@@ -61,7 +59,8 @@ public class GameService {
                                 game.setGameName(name);
                                 game.setCostPerIGC(r.nextInt(100));
                                 game.setCostPerSingleRoll(r.nextInt(5));
-                                game.setGameID(name.charAt(0) + ""+ Integer.toString(r.nextInt(90)));
+                                game.setGameID(gameIDs.get(i));
+                                gameIDs.remove(i);
                                 return game;
                             }).collect(Collectors.toList()));
         }

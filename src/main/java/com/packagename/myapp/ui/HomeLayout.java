@@ -22,8 +22,8 @@ import javax.swing.text.html.ListView;
                 "./images/offline.png"}
 )
 @CssImport("./styles/shared-styles.css")
-public class MainLayout extends AppLayout {
-    public MainLayout() {
+public class HomeLayout extends AppLayout {
+    public HomeLayout() {
         createHeader();
         createDrawer();
     }

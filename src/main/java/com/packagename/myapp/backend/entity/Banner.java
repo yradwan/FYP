@@ -183,11 +183,11 @@ public class Banner extends AbstractEntity implements Cloneable{
         this.rarity9 = rarity9;
     }
 
-    public int getRarityValue() {
+    public int getRarity9Value() {
         return rarityValue;
     }
 
-    public void setRarityValue(int rarityValue) {
+    public void setRarity9Value(int rarityValue) {
         this.rarityValue = rarityValue;
     }
 

@@ -46,6 +46,14 @@ public class BannerService {
         }
         return new Banner();
     }
+    public Banner find(String gameID, String name){
+        List<Banner> list = findAll(gameID);
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).getUserName() == name)
+                return list.get(i);
+        }
+        return new Banner();
+    }
     public long count() {
         return bannerRepository.count();
     }
