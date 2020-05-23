@@ -6,6 +6,7 @@ import com.packagename.myapp.backend.service.BannerService;
 import com.packagename.myapp.backend.service.GameService;
 import com.packagename.myapp.ui.HomeLayout;
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.charts.Chart;
@@ -425,6 +426,8 @@ public class BannerView extends VerticalLayout implements HasUrlParameter<String
 
     private Component getUserForm(String userName) {
         Banner banner = bannerService.find(ID, userName);
+        Banner adminBanner = getAdmin();
+        //will new to go back here and update this to set the labels using admin instead
         VerticalLayout layout = new VerticalLayout();
         rarity1.setLabel(banner.getRarity1());
         rarity1.setValue(banner.getRarity1Value());
@@ -483,6 +486,25 @@ public class BannerView extends VerticalLayout implements HasUrlParameter<String
 
     private void submitData(String userName) {
         Banner banner = bannerService.find(ID, userName);
+        banner.setRarity1Value(rarity1.getValue());
+        banner.setRarity2Value(rarity2.getValue());
+        banner.setRarity3Value(rarity3.getValue());
+        if (getRarities() > 3)
+            banner.setRarity4Value(rarity4.getValue());
+        if (getRarities() > 4)
+            banner.setRarity5Value(rarity5.getValue());
+        if (getRarities() > 5)
+            banner.setRarity6Value(rarity6.getValue());
+        if (getRarities() > 6)
+            banner.setRarity7Value(rarity7.getValue());
+        if (getRarities() > 7)
+            banner.setRarity8Value(rarity8.getValue());
+        if (getRarities() > 8)
+            banner.setRarity9Value(rarity9.getValue());
+        if (getRarities() > 9)
+            banner.setRarity10Value(rarity10.getValue());
+        bannerService.save(banner);
+        UI.getCurrent().getPage().reload();
         //will need to iterate through the get rarities like before
         //set the rarity to the new values
         //then need to find out how to update an existing banner
