@@ -24,29 +24,22 @@ import javax.swing.text.html.ListView;
 @CssImport("./styles/shared-styles.css")
 public class HomeLayout extends AppLayout {
     public HomeLayout() {
-        createHeader();
-        createDrawer();
+        createHomeBar();
     }
 
-    private void createHeader() {
-        H1 logo = new H1("Luck Tracker");
-        logo.addClassName("logo");
-        Anchor logout = new Anchor("/logout", "Log Out");
-
-        HorizontalLayout header = new HorizontalLayout(new DrawerToggle(), logo, logout);
-
-        header.setDefaultVerticalComponentAlignment(
-                FlexComponent.Alignment.CENTER);
-        header.setWidth("100%");
-        header.expand(logo);
-        header.addClassName("header");
-        addToNavbar(header);
+    private void createHomeBar() {
+        H1 title = new H1("Luck Tracker");
+        title.addClassName("title");
+        RouterLink games = new RouterLink("List of Games", GameListView.class);
+        //this is meant to logout the user
+        //this is correct according to official examples but it's not working for some reason
+        Anchor logout = new Anchor("logout", "Log Out");
+        HorizontalLayout homeBar = new HorizontalLayout( title, games, logout);
+        homeBar.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.CENTER);
+        homeBar.setWidth("100%");
+        homeBar.expand(games);
+        homeBar.addClassName("home");
+        addToNavbar(homeBar);
     }
 
-    private void createDrawer() {
-        RouterLink listLink = new RouterLink("List", GameListView.class);
-        listLink.setHighlightCondition(HighlightConditions.sameLocation());
-
-        addToDrawer(new VerticalLayout(listLink));
-    }
 }

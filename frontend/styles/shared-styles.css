@@ -1,16 +1,21 @@
-/* Main layout */
+/* Homebar */
 
 a[highlight] {
     font-weight: bold;
     text-decoration: underline;
 }
 
-.header {
+.home {
     padding: 0 var(--lumo-space-m);
 }
 
-.header h1.logo {
-    font-size: 1em;
+body {
+  background-color: #5c5c8a;
+  color: white;
+}
+
+.home h1.title {
+    font-size: 3em;
     margin: var(--lumo-space-m);
 }
 
@@ -21,6 +26,11 @@ a[highlight] {
 
 .list-view .game-grid {
     flex: 2;
+    color: grey;
+}
+
+grid{
+    background-color: #5c5c8a;
 }
 
 .list-view .game-form {
@@ -29,8 +39,8 @@ a[highlight] {
 }
 
 @media all and (max-width: 1100px) {
-    .list-view.editing .toolbar,
-    .list-view.editing .contact-grid,
+    .list-view.editing .taskbar,
+    .list-view.editing .game-grid,
     .login-view.editing .login{
         display: none;
    }

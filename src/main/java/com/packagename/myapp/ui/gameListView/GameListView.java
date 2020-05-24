@@ -72,7 +72,7 @@ public class GameListView extends VerticalLayout {
         div.addClassName("div");
         div.setSizeFull();
 
-        add(getToolbar(), div);
+        add(getTaskBar(), div);
         updateList();
         closeEditor();
     }
@@ -218,7 +218,7 @@ public class GameListView extends VerticalLayout {
         removeClassName("editing");
     }
 
-    private HorizontalLayout getToolbar() {
+    private HorizontalLayout getTaskBar() {
         filterText.setPlaceholder("Filter by game name...");
         filterText.setClearButtonVisible(true);
         filterText.setValueChangeMode(ValueChangeMode.LAZY);
@@ -227,9 +227,9 @@ public class GameListView extends VerticalLayout {
         Button addGameButton = new Button("Add Game");
         addGameButton.addClickListener(click -> addGame());
 
-        HorizontalLayout toolbar = new HorizontalLayout(filterText, addGameButton);
-        toolbar.addClassName("toolbar");
-        return toolbar;
+        HorizontalLayout taskbar = new HorizontalLayout(filterText, addGameButton);
+        taskbar.addClassName("taskbar");
+        return taskbar;
     }
 
     private void addGame() {

@@ -34,7 +34,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private static final String LOGOUT_SUCCESS_URL = "/login";
 
     @Override
-    @Order(1000)
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .requestCache().requestCache(new CustomRequestCache())
@@ -49,20 +48,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .failureUrl(LOGIN_FAILURE_URL)
                 .and().logout().logoutSuccessUrl(LOGOUT_SUCCESS_URL);
     }
-    /*
-    @Bean
-    @Override
-    public UserDetailsService userDetailsService() {
-
-        UserDetails testUser =
-                User.withUsername("user")
-                        .password("{noop}password")
-                        .roles("USER")
-                        .build();
-
-        return new InMemoryUserDetailsManager(testUser);
-    }
-    */
 
     @Override
     public void configure(WebSecurity web) {
@@ -94,38 +79,5 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         }
         return new InMemoryUserDetailsManager(userDetails);
     }
-
-
-    /*
-
-*/
-    /*
-    @Autowired
-    public void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth
-                .inMemoryAuthentication()
-                .withUser("user_name").password("user_name@password").roles("USER");
-    }
-
-
- */
-    /*
-@Bean
-@Override
-public UserDetailsService userDetailsService() {
-    UserDetails user =
-            User.withUsername("user")
-                    .password("{noop}password")
-                    .roles("USER")
-                    .build();
-    return new InMemoryUserDetailsManager(user);
-}
-    /*
-    @Autowired
-    public void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(customAuthenticationProvider);
-    }
-
-     */
 
 }

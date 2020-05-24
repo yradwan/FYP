@@ -13,6 +13,7 @@ import com.vaadin.flow.component.charts.Chart;
 import com.vaadin.flow.component.charts.model.ChartType;
 import com.vaadin.flow.component.charts.model.DataSeries;
 import com.vaadin.flow.component.charts.model.DataSeriesItem;
+import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -56,13 +57,7 @@ public class BannerView extends VerticalLayout implements HasUrlParameter<String
     //adding a form to add our stats to this page
     //once that's done head on to login
 
-    //gameID = "gbf0520";
-    //move totals back to chart
-
-    //move back to chart after testing
-    //to be removed
-    //private Grid<Banner> grid = new Grid<>(Banner.class);
-
+    //constructor, our main methods will be called in the setparameter
     public BannerView(BannerService bannerService, GameService gameService) {
         this.bannerService = bannerService;
         this.gameService = gameService;
@@ -70,6 +65,7 @@ public class BannerView extends VerticalLayout implements HasUrlParameter<String
         setDefaultHorizontalComponentAlignment(Alignment.CENTER);
 
     }
+    //this method is called after the constructor and gets the parameter passed from the previous view
     @Override
     public void setParameter(BeforeEvent event,
                              String parameter) {
@@ -84,14 +80,18 @@ public class BannerView extends VerticalLayout implements HasUrlParameter<String
         addUI(username);
     }
 
+
+    //adds all our user ui  to our view
     private void addUI(String userName) {
         List<Banner> bannerCheck = bannerService.findAll(ID);
         //System.out.println(bannerCheck);
         if (bannerCheck.size() != 0 ){
             VerticalLayout averageLayout = new VerticalLayout();
-            averageLayout.add(getData(), getAverageStats());
+            H1 averageStats = new H1("Average Statistics");
+            averageLayout.add(averageStats, getData(), getAverageStats());
             VerticalLayout userLayout = new VerticalLayout();
-            userLayout.add(getData(userName), getUserRates(userName));
+            H1 userStats = new H1("User Statistics");
+            userLayout.add(userStats, getData(userName), getUserRates(userName));
             HorizontalLayout layout = new HorizontalLayout();
             layout.add(averageLayout, userLayout);
             button.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
@@ -111,6 +111,7 @@ public class BannerView extends VerticalLayout implements HasUrlParameter<String
    //     gameID = ID;
    // }
 
+    //creates a span that tells us how many users have submitted data for this banner
     private Component getBannerCount() {
         //will need to fix this and get it to show the correct number of users
         //I also need to make sure to fix the stats so it'll properly pass the stats
@@ -124,14 +125,11 @@ public class BannerView extends VerticalLayout implements HasUrlParameter<String
         stats.addClassName("banner-count");
         return stats;
     }
-    //change the methods in this section from reflective to an if statement
-    //
-    //
-    //next to do
-    //
-    //
 
     /*
+
+    original way to get our stat map
+
     private Map<String, Integer> getStats() throws Exception {
         Banner banner = bannerService.find(gameID);
         HashMap<String, Integer> stats = new HashMap<>();
@@ -161,6 +159,7 @@ public class BannerView extends VerticalLayout implements HasUrlParameter<String
     }
     */
 
+    //creates a span containing our average stats
     private  Component getAverageStats(){
         Map<String, Integer> statMaps = getStats();
         VerticalLayout averageStats = new VerticalLayout();
@@ -179,6 +178,7 @@ public class BannerView extends VerticalLayout implements HasUrlParameter<String
         return averageStats;
     }
 
+    //gets a map of our average stats for usage in the average chart
     private Map<String, Integer> getStats() {
         //Banner banner = bannerService.find(gameID);
         HashMap<String, Integer> stats = new HashMap<>();
@@ -242,6 +242,8 @@ public class BannerView extends VerticalLayout implements HasUrlParameter<String
         totals.forEach(total1 -> stats.put(total1.getRarity(), total1.getSize()));
         return stats;
     }
+
+    //gets the number of rarities
     private int getRarities()  {
         int size = 2;
         Banner adminBanner = getAdmin();
@@ -310,6 +312,8 @@ public class BannerView extends VerticalLayout implements HasUrlParameter<String
         }
         return size;
     }
+
+    //gets the banner used to initialise our data
     private Banner getAdmin() {
         List<Banner> bannerList = bannerService.findAll(ID);
         String admin = "admin";
@@ -320,7 +324,8 @@ public class BannerView extends VerticalLayout implements HasUrlParameter<String
         }
         return adminBanner;
     }
-    //remove this exception once you finish grabbing the new one
+
+    //creates a chart using the average stats
     private Chart getData() {
         Chart chart = new Chart(ChartType.PIE);
         DataSeries dataSeries = new DataSeries();
@@ -331,6 +336,7 @@ public class BannerView extends VerticalLayout implements HasUrlParameter<String
         return chart;
     }
 
+    //creates a chart using the user data
     private Chart getData(String userName) {
         Chart chart = new Chart(ChartType.PIE);
         DataSeries dataSeries = new DataSeries();
@@ -341,7 +347,7 @@ public class BannerView extends VerticalLayout implements HasUrlParameter<String
         return chart;
     }
 
-    //need to be fixed
+    //creates a span containing the user stats
     private  Component getUserRates(String userName){
         Map<String, Integer> statMaps = getStats(userName);
         VerticalLayout averageStats = new VerticalLayout();
@@ -360,6 +366,7 @@ public class BannerView extends VerticalLayout implements HasUrlParameter<String
         return averageStats;
     }
 
+    //gets a map of our user stats for usage in the user chart
     private Map<String, Integer> getStats(String userName) {
         Banner banner = bannerService.find(ID, userName);
         HashMap<String, Integer> stats = new HashMap<>();
@@ -424,6 +431,7 @@ public class BannerView extends VerticalLayout implements HasUrlParameter<String
         return stats;
     }
 
+    //creates our form for submitting/updating user stats
     private Component getUserForm(String userName) {
         Banner banner = bannerService.find(ID, userName);
         Banner adminBanner = getAdmin();
@@ -481,9 +489,12 @@ public class BannerView extends VerticalLayout implements HasUrlParameter<String
             rarity10.setMin(0);
             layout.add(rarity10);
         }
+        layout.setDefaultHorizontalComponentAlignment(Alignment.CENTER);
+        layout.setHorizontalComponentAlignment(Alignment.CENTER);
         return layout;
     }
 
+    //submits the data and saves it to our banner using our service
     private void submitData(String userName) {
         Banner banner = bannerService.find(ID, userName);
         Banner adminBanner = getAdmin();
